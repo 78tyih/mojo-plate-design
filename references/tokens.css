@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════════════════
+   mojo-plate-design · tokens.css
+   Engraved-atlas design tokens + core utility classes.
+   Fonts: Instrument Serif / Inter 300 / JetBrains Mono (Google Fonts).
+   Requires motifs.svg inlined in <body> for .boil + #rule symbols.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* specimen imagery (swap for any vintage engraving crops) */
+  --img-papillons:url(../assets/papillons.jpg);
+  --img-bugs:url(../assets/bugs.jpg);
+  --img-urania:url(../assets/urania.jpg);
+
+  /* paper & ink */
+  --paper:#0b0b09;          /* near-black warm paper */
+  --paper-2:#12120f;        /* raised paper */
+  --ink:#e9e5d4;            /* bone cream */
+  --ink-60:#e9e5d499;
+  --ink-40:#e9e5d466;
+  --ink-15:#e9e5d429;
+
+  /* the ONE accent: acid lime */
+  --lime:#cdf546;
+  --terra:#cdf546;          /* alias kept from source */
+  --terra-deep:#b8e032;     /* italic serif emphasis */
+  --gold:#cdf546;           /* celestial-chart accent on slate */
+  --cream:#f4efe2;          /* ink on slate sections */
+
+  /* dark section surface */
+  --slate:#10141f;
+  --slate-deep:#0c0f17;
+
+  --err:#ff4ab3;
+
+  /* type trio */
+  --f-serif:"Instrument Serif", Georgia, serif;
+  --f-body:"Inter", sans-serif;
+  --f-mono:"JetBrains Mono", monospace;
+
+  --gut:clamp(20px, 4.5vw, 72px);   /* page gutter */
+}
+
+/* ── base ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);
+     -webkit-font-smoothing:antialiased;font-weight:300;overflow-x:hidden}
+::selection{background:var(--lime);color:#0b0b09}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--paper-2)}
+::-webkit-scrollbar-thumb{background:var(--ink-40);border:3px solid var(--paper-2);border-radius:0}
+
+/* ── film grain (fixed, always on) ── */
+.grain{pointer-events:none;z-index:96;opacity:.22;mix-blend-mode:screen;position:fixed;inset:0;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.45 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");}
+
+/* ── hand-etched wobble (needs #boil filter from motifs.svg) ── */
+.boil{filter:url(#boil);will-change:filter}
+
+/* ── plate caption: ❦ PLATE I ❦ ── */
+.plate-cap{font-family:var(--f-mono);letter-spacing:.42em;text-transform:uppercase;
+           align-items:center;gap:16px;font-size:11px;display:inline-flex}
+.plate-cap:before,.plate-cap:after{content:"❦";font-family:var(--f-serif);letter-spacing:0;font-size:13px}
+
+/* ── stamp entrance: print-block snap, steps() only ── */
+.stamp{opacity:0;transform:rotate(-1.4deg)scale(1.03)}
+.stamp.in{opacity:1;transition:opacity .4s steps(4,end),transform .4s steps(4,end);transform:rotate(0)scale(1)}
+@keyframes stamp{to{opacity:1;transform:none}}
+@keyframes sunspin{to{transform:rotate(1turn)}}
+@keyframes cue-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ── etched sunburst, slow celestial spin ── */
+.sun{transform-origin:50%;opacity:.85;animation:90s linear infinite sunspin;position:absolute}
+
+/* ── specimen plate card (duotone vintage engraving) ── */
+.spec{background-color:#f6f1e2;background-image:var(--img-papillons);background-repeat:no-repeat;
+      outline-offset:3px;border:1px solid #23221c;outline:1px solid #cdf54659;
+      box-shadow:6px 7px #cdf5461a;position:absolute}
+/* any image → matching duotone: */
+.chip-duotone{mix-blend-mode:screen;
+  filter:grayscale()invert(.94)sepia(.9)saturate(2.6)hue-rotate(33deg)contrast(1.06)}
+
+/* ── engraved divider rule: ───❖─── (needs #rule symbol) ── */
+.hero-rule{width:clamp(120px,18vw,230px);color:var(--ink);margin:clamp(22px,3.4vh,34px) auto;display:block}
+
+/* ── reduced motion: everything visible, nothing moves ── */
+@media (prefers-reduced-motion:reduce){
+  .boil{filter:none}
+  .stamp{opacity:1!important;transform:none!important}
+  .sun{animation:none}
+}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Mojo — The Agentic Trading OS (Replica)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --img-papillons:url(papillons.jpg);
+  --img-bugs:url(bugs.jpg);
+  --img-urania:url(urania.jpg);
+  --paper:#0b0b09; --paper-2:#12120f;
+  --ink:#e9e5d4; --ink-60:#e9e5d499; --ink-40:#e9e5d466; --ink-15:#e9e5d429;
+  --lime:#cdf546; --terra:#cdf546; --terra-deep:#b8e032;
+  --slate:#10141f; --slate-deep:#0c0f17;
+  --gold:#cdf546; --cream:#f4efe2; --err:#ff4ab3;
+  --f-serif:"Instrument Serif", Georgia, serif;
+  --f-body:"Inter", sans-serif;
+  --f-mono:"JetBrains Mono", monospace;
+  --gut:clamp(20px, 4.5vw, 72px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);-webkit-font-smoothing:antialiased;font-weight:300;overflow-x:hidden}
+::selection{background:var(--lime);color:#0b0b09}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--paper-2)}
+::-webkit-scrollbar-thumb{background:var(--ink-40);border:3px solid var(--paper-2);border-radius:0}
+
+/* film grain */
+.grain{pointer-events:none;z-index:96;opacity:.22;mix-blend-mode:screen;position:fixed;inset:0;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.45 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");}
+
+/* loader */
+.loader{z-index:400;background:var(--paper);flex-direction:column;justify-content:center;align-items:center;gap:26px;transition:opacity .45s steps(4,end),visibility .45s;display:flex;position:fixed;inset:0}
+.loader.done{opacity:0;visibility:hidden}
+.loader svg.mark{aspect-ratio:248/103;width:clamp(160px,20vw,230px);color:var(--lime)}
+.loader .mark,.loader .plate-no{opacity:0;animation:.4s steps(3,end) .25s forwards stamp;transform:rotate(-2deg)scale(1.06)}
+.loader .plate-no{animation-delay:.55s}
+
+/* shared motifs */
+.boil{filter:url(#boil);will-change:filter}
+.plate-cap{font-family:var(--f-mono);letter-spacing:.42em;text-transform:uppercase;align-items:center;gap:16px;font-size:11px;display:inline-flex}
+.plate-cap:before,.plate-cap:after{content:"❦";font-family:var(--f-serif);letter-spacing:0;font-size:13px}
+.stamp{opacity:0;transform:rotate(-1.4deg)scale(1.03)}
+.stamp.in{opacity:1;transition:opacity .4s steps(4,end),transform .4s steps(4,end);transform:rotate(0)scale(1)}
+@keyframes stamp{to{opacity:1;transform:none}}
+@keyframes sunspin{to{transform:rotate(1turn)}}
+@keyframes cue-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* header */
+.hd{z-index:100;height:72px;padding:0 var(--gut);background:var(--paper);border-bottom:1px solid var(--ink);box-shadow:0 3px 0 -2px var(--ink-15);justify-content:space-between;align-items:center;display:flex;position:fixed;top:0;left:0;right:0}
+.hd:after{content:"";background:var(--ink-40);height:1px;position:absolute;bottom:-5px;left:0;right:0}
+.logo{display:inline-flex}
+.logo svg{aspect-ratio:248/103;width:96px;color:var(--lime)}
+.hd-nav{align-items:center;gap:clamp(14px,2.6vw,34px);display:flex}
+.hd-link{font-family:var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid #0000;align-items:center;gap:8px;padding-bottom:2px;font-size:11px;transition:border-color .2s,color .2s;display:inline-flex}
+.hd-link:hover{border-bottom-color:var(--terra);color:var(--terra-deep)}
+.hd-link svg{width:13px;height:13px}
+
+/* ── PLATE I : hero ── */
+.hero{min-height:100svh;padding:130px var(--gut) 110px;justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}
+.hero .frame{pointer-events:none;border:1px solid #cdf5468c;position:absolute;inset:92px clamp(14px,2.5vw,40px) clamp(14px,2.5vw,40px)}
+.hero .frame:after{content:"";border:1px solid #cdf54638;position:absolute;inset:5px}
+.hero-etch{pointer-events:none;color:var(--lime);position:absolute;inset:0}
+.sun{transform-origin:50%;opacity:.85;animation:90s linear infinite sunspin;position:absolute}
+.spec{z-index:1;background-color:#f6f1e2;background-image:var(--img-papillons);outline-offset:3px;background-repeat:no-repeat;border:1px solid #23221c;outline:1px solid #cdf54659;position:absolute;box-shadow:6px 7px #cdf5461a}
+.spec-l{aspect-ratio:3/4.1;background-position:10% 8%;background-size:240%;width:clamp(140px,13.5vw,215px);top:15%;left:clamp(18px,3.2vw,52px);transform:rotate(-2.6deg)}
+.spec-r{aspect-ratio:3/4.1;background-position:85% 80%;background-size:260%;width:clamp(125px,12.5vw,195px);bottom:18%;right:clamp(18px,3.2vw,52px);transform:rotate(2deg)}
+.hero-core{z-index:3;text-align:center;max-width:1040px;position:relative}
+.hero .plate-cap{color:var(--lime);margin-bottom:clamp(26px,4vh,44px)}
+.hero h1{font-family:var(--f-serif);letter-spacing:-.01em;text-wrap:balance;font-size:clamp(54px,9.6vw,124px);font-weight:400;line-height:1}
+.hero h1 em{color:var(--terra-deep);font-style:italic}
+.hero-rule{width:clamp(120px,18vw,230px);color:var(--ink);margin:clamp(22px,3.4vh,34px) auto;display:block}
+.hero-sub{letter-spacing:.02em;color:var(--ink-60);font-size:clamp(16px,1.8vw,21px);font-weight:300}
+.hero-form-zone{flex-direction:column;align-items:center;margin-top:clamp(38px,6vh,58px);display:flex}
+.eform{border:1.5px solid var(--ink);background:var(--paper-2);align-items:stretch;width:min(560px,100%);display:flex;box-shadow:4px 4px #cdf54624}
+.eform input{min-width:0;color:var(--ink);background:transparent;border:none;outline:none;flex:1;padding:17px 20px;font-size:16px;font-weight:300}
+.eform input::placeholder{color:var(--ink-40);font-style:italic;font-family:var(--f-serif);font-size:17px}
+.eform button{border:none;border-left:1.5px solid var(--ink);background:var(--lime);color:#0b0b09;font-family:var(--f-mono);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;flex:none;justify-content:center;align-items:center;gap:10px;padding:0 26px;font-size:12px;transition:background .2s steps(2,end),color .2s steps(2,end);display:inline-flex}
+.eform button:hover:not(:disabled){background:#e4ff7d}
+.eform button:disabled{opacity:.35;cursor:not-allowed}
+.hero-note{font-family:var(--f-mono);letter-spacing:.08em;color:var(--ink-40);margin-top:20px;font-size:11px}
+.form-err{font-family:var(--f-mono);color:var(--err);font-size:11px;letter-spacing:.08em;margin-top:12px}
+.cue{z-index:3;color:var(--ink-40);flex-direction:column;align-items:center;gap:6px;display:flex;position:absolute;bottom:clamp(24px,4vh,52px);left:50%;transform:translateX(-50%)}
+.cue svg{width:14px;height:22px;color:var(--ink-60);animation:1.6s steps(3,end) infinite cue-bob}
+
+/* ── PLATE II : celestial timeline ── */
+.tl{background:var(--slate);color:var(--cream);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:clamp(90px,13vh,150px) var(--gut) clamp(110px,15vh,170px);position:relative;overflow:hidden}
+.tl:before{content:"";pointer-events:none;background-image:linear-gradient(90deg,#f4efe20d 1px,#0000 1px),linear-gradient(#f4efe20d 1px,#0000 1px);background-size:84px 84px;position:absolute;inset:0}
+.tl-head{text-align:center;margin-bottom:clamp(70px,10vh,120px);position:relative}
+.tl-head .plate-cap{color:#f4efe2b3}
+.urania-card{z-index:0;aspect-ratio:1200/1707;background-image:var(--img-urania);background-size:cover;border:1px solid #f4efe2b3;width:clamp(160px,16vw,235px);position:absolute;top:clamp(36px,5vh,70px);left:clamp(10px,3.5vw,64px);transform:rotate(-3deg);box-shadow:0 12px 30px #0006}
+.tl-chart{max-width:1020px;margin:0 auto;position:relative}
+#constellation{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ev{flex-direction:column;max-width:470px;padding:0 0 clamp(90px,13vh,150px);display:flex;position:relative}
+.ev:nth-of-type(odd){margin-left:auto}
+.ev:nth-of-type(2n){margin-right:auto}
+.ev:last-child{padding-bottom:0}
+.ev .star{width:64px;height:64px;color:var(--gold);margin-bottom:18px;position:relative}
+.ev .star .burst{transform-origin:50%;animation:70s linear infinite sunspin}
+.ev .time{font-family:var(--f-mono);letter-spacing:.3em;color:var(--gold);margin-bottom:14px;font-size:13px;font-weight:500}
+.ev .desc{font-family:var(--f-serif);white-space:pre-line;text-wrap:pretty;color:var(--cream);font-size:clamp(23px,3vw,34px);line-height:1.25}
+.ev .desc em{color:var(--gold);font-style:italic}
+
+/* ── Colophon : letterpress statement ── */
+.stmt{text-align:center;min-height:88svh;padding:clamp(110px,15vh,170px) var(--gut);background:var(--paper);justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}
+.stmt .sun{opacity:.6;color:var(--lime)}
+.stmt-inner{max-width:1000px;position:relative}
+.stmt .plate-cap{color:var(--ink-40);margin-bottom:clamp(34px,5vh,54px)}
+.stmt p{font-family:var(--f-serif);letter-spacing:-.005em;text-wrap:balance;font-size:clamp(40px,6.8vw,88px);font-weight:400;line-height:1.06}
+.stmt p .w{opacity:0;display:inline-block;transform:rotate(-1.6deg)translateY(.08em)}
+.stmt.in p .w{opacity:1;transition:opacity .3s steps(3,end),transform .3s steps(3,end);transform:rotate(0)translateY(0)}
+.stmt p.l2{margin-top:.18em}
+.stmt p.l2 .w{color:var(--terra-deep);font-style:italic}
+
+/* ── PLATE III : lime CTA ── */
+.cta{text-align:center;background:var(--lime);color:#0d0d0a;border-top:2px solid var(--ink);min-height:100svh;padding:clamp(120px,16vh,180px) var(--gut) 0;flex-direction:column;justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}
+.cta:before{content:"";pointer-events:none;background-image:linear-gradient(90deg,#23221c1a 1px,#0000 1px),linear-gradient(#23221c1a 1px,#0000 1px);background-size:56px 56px;position:absolute;inset:0}
+.bug{background-image:var(--img-bugs);pointer-events:none;background-repeat:no-repeat;position:absolute}
+.bfly{background-image:var(--img-papillons);pointer-events:none;background-repeat:no-repeat;position:absolute}
+.chip{background-color:#f4eedd;border:1px solid #23221c;box-shadow:4px 5px #0b0b0973}
+.cta-inner{z-index:3;max-width:920px;position:relative}
+.cta .plate-cap{color:#0d0d0ab8;margin-bottom:clamp(30px,4.5vh,50px)}
+.cta h2{font-family:var(--f-serif);text-wrap:balance;font-size:clamp(50px,8.8vw,116px);font-weight:400;line-height:1}
+.cta h2 em{color:#0d0d0a;text-underline-offset:.12em;font-style:italic;text-decoration:underline;text-decoration-thickness:2px}
+.cta-sub{color:#0d0d0acc;margin-top:clamp(22px,3.4vh,34px);font-size:clamp(16px,1.8vw,21px);font-weight:300}
+.cta-btn{color:var(--lime);font-family:var(--f-mono);letter-spacing:.16em;text-transform:uppercase;background:#0d0d0a;border:1.5px solid #0d0d0a;align-items:center;gap:12px;margin-top:clamp(40px,6vh,60px);padding:19px 38px;font-size:13px;transition:transform .16s steps(2,end),box-shadow .16s steps(2,end),background .2s steps(2,end);display:inline-flex;box-shadow:5px 5px #23221c59}
+.cta-btn:hover{background:#1c1c14;transform:translate(2px,2px);box-shadow:2px 2px #23221c59}
+.cta-btn svg{width:16px;height:16px}
+.wm{z-index:2;pointer-events:none;width:100%;margin-top:clamp(60px,9vh,100px);position:relative;overflow:hidden}
+.wm svg{aspect-ratio:248/103;color:#23221c47;width:min(54vw,680px);margin:0 auto;display:block;transform:translateY(16%)}
+.ft{z-index:3;width:100%;padding:20px var(--gut);background:var(--paper);color:var(--ink);border-top:1.5px solid #0d0d0a;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;display:flex;position:relative}
+.ft .meta{font-family:var(--f-mono);letter-spacing:.3em;text-transform:uppercase;color:var(--ink-60);font-size:10px}
+.ft .links{align-items:center;gap:20px;display:flex}
+.ft .links a{color:var(--ink-60);transition:color .2s;display:inline-flex}
+.ft .links a:hover{color:var(--terra-deep)}
+.ft .links svg{width:16px;height:16px}
+
+@media (max-width:760px){
+  .spec,.urania-card{display:none}
+  .eform{flex-direction:column}
+  .eform button{border-left:none;border-top:1.5px solid var(--ink);padding:15px}
+}
+@media (prefers-reduced-motion:reduce){
+  .boil{filter:none}
+  .stamp,.stmt p .w{opacity:1!important;transform:none!important}
+  .sun,.ev .star .burst,.cue svg{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- mojo wordmark — the two O's are eyes -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="boil" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence id="boilTurb" type="fractalNoise" baseFrequency="0.015" numOctaves="2" seed="1" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2"/>
+    </filter>
+  </defs>
+  <symbol id="mojoLogo" viewBox="0 0 248 103">
+    <g fill="currentColor">
+      <path d="M65.0434 86.8143C63.6951 86.8143 62.6019 85.721 62.6019 84.3727V26.2261L38.7533 71.7072C38.1205 72.9185 36.875 73.6683 35.5077 73.6683C34.1404 73.6683 32.8939 72.9128 32.2621 71.7024L8.41352 26.2214V84.3727C8.41352 85.721 7.32025 86.8143 5.97197 86.8143C4.62368 86.8143 3.5304 85.721 3.5304 84.3727V21.2992C3.5304 19.6074 4.67791 18.1469 6.32021 17.7396C7.96251 17.3324 9.65906 18.0974 10.444 19.5979L35.5039 67.394L60.5637 19.5979C61.3478 18.0974 63.0443 17.3371 64.6876 17.7396C66.3299 18.1469 67.4774 19.6074 67.4774 21.2992V84.3775C67.4774 85.7258 66.3841 86.819 65.0358 86.819L65.0453 86.8143H65.0434Z"/>
+      <path d="M113.87 86.6728C95.278 86.6728 80.1519 71.11 80.1519 51.978C80.1519 32.8461 95.278 17.2832 113.87 17.2832C132.463 17.2832 147.589 32.8461 147.589 51.978C147.589 71.11 132.463 86.6728 113.87 86.6728ZM113.87 22.1625C97.9698 22.1625 85.0302 35.5379 85.0302 51.978C85.0302 68.4182 97.965 81.7935 113.87 81.7935C129.776 81.7935 142.706 68.4182 142.706 51.978C142.706 35.5379 129.771 22.1625 113.87 22.1625Z"/>
+      <path d="M210.977 86.6728C192.385 86.6728 177.259 71.11 177.259 51.978C177.259 32.8461 192.385 17.2832 210.977 17.2832C229.57 17.2832 244.696 32.8461 244.696 51.978C244.696 71.11 229.57 86.6728 210.977 86.6728ZM210.977 22.1625C195.077 22.1625 182.142 35.5379 182.142 51.978C182.142 68.4182 195.077 81.7935 210.977 81.7935C226.878 81.7935 239.818 68.4182 239.818 51.978C239.818 35.5379 226.883 22.1625 210.977 22.1625Z"/>
+      <path d="M142.969 102.137C141.659 102.137 140.58 101.102 140.532 99.7835C140.482 98.4352 141.537 97.3076 142.88 97.2582C148.303 97.0622 152.534 95.3561 155.447 92.1885C159.512 87.7707 159.703 82.015 159.708 81.6125C159.698 81.524 159.693 81.4356 159.693 81.3433V21.2946C159.693 19.9463 160.787 18.853 162.135 18.853C163.483 18.853 164.576 19.9463 164.576 21.2946V81.2747C164.69 83.2263 163.939 89.4529 159.894 94.494C156.04 99.2991 150.377 101.868 143.057 102.133H142.969V102.137V102.137ZM159.717 81.6468C159.722 81.7058 159.731 81.7495 159.737 81.7838C159.728 81.74 159.723 81.6953 159.717 81.6468Z"/>
+    </g>
+    <circle class="eye-p1" cx="112.384" cy="36.8" r="9.6" fill="currentColor"/>
+    <circle class="eye-p2" cx="211.584" cy="36.8" r="9.6" fill="currentColor"/>
+  </symbol>
+  <!-- etched sunburst: rays + dotted halo -->
+  <symbol id="sunburst" viewBox="0 0 100 100">
+    <g fill="none" stroke="currentColor">
+      <circle cx="50" cy="50" r="13" stroke-width="1.6"/>
+      <circle cx="50" cy="50" r="21" stroke-width="1" stroke-dasharray="0.5 5" stroke-linecap="round"/>
+      <g stroke-width="1.6">
+        <line x1="50" y1="2" x2="50" y2="22"/><line x1="50" y1="78" x2="50" y2="98"/>
+        <line x1="2" y1="50" x2="22" y2="50"/><line x1="78" y1="50" x2="98" y2="50"/>
+        <line x1="16" y1="16" x2="30" y2="30"/><line x1="70" y1="70" x2="84" y2="84"/>
+        <line x1="84" y1="16" x2="70" y2="30"/><line x1="30" y1="70" x2="16" y2="84"/>
+      </g>
+      <g stroke-width="1">
+        <line x1="50" y1="28" x2="50" y2="34"/><line x1="50" y1="66" x2="50" y2="72"/>
+        <line x1="28" y1="50" x2="34" y2="50"/><line x1="66" y1="50" x2="72" y2="50"/>
+      </g>
+    </g>
+  </symbol>
+  <!-- event starburst (celestial chart) -->
+  <symbol id="evstar" viewBox="0 0 64 64">
+    <g class="burst">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <line x1="32" y1="2" x2="32" y2="18"/><line x1="32" y1="46" x2="32" y2="62"/>
+        <line x1="2" y1="32" x2="18" y2="32"/><line x1="46" y1="32" x2="62" y2="32"/>
+        <line x1="11" y1="11" x2="21" y2="21"/><line x1="43" y1="43" x2="53" y2="53"/>
+        <line x1="53" y1="11" x2="43" y2="21"/><line x1="21" y1="43" x2="11" y2="53"/>
+      </g>
+      <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="0.5 5" stroke-linecap="round"/>
+    </g>
+    <circle cx="32" cy="32" r="7" fill="currentColor"/>
+    <circle cx="32" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  </symbol>
+  <!-- engraved divider rule -->
+  <symbol id="rule" viewBox="0 0 230 14">
+    <g fill="none" stroke="currentColor" stroke-width="1.2">
+      <line x1="0" y1="7" x2="96" y2="7"/>
+      <line x1="134" y1="7" x2="230" y2="7"/>
+      <path d="M115,1 L121,7 L115,13 L109,7 Z"/>
+      <circle cx="101" cy="7" r="1.6" fill="currentColor" stroke="none"/>
+      <circle cx="129" cy="7" r="1.6" fill="currentColor" stroke="none"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ░░ loader ░░ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <svg class="mark boil" viewBox="0 0 248 103"><use href="#mojoLogo"/></svg>
+  <span class="plate-no plate-cap" style="color:var(--ink-40)">Atlas of Intent · MMXXVI</span>
+</div>
+
+<!-- ░░ header ░░ -->
+<header class="hd">
+  <a class="logo" href="#" aria-label="Mojo"><svg viewBox="0 0 248 103"><use href="#mojoLogo"/></svg></a>
+  <nav class="hd-nav" aria-label="Links">
+    <a class="hd-link" href="https://docs.mojo.trade/" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Docs
+    </a>
+    <a class="hd-link" href="https://x.com/MojoAI_HQ/" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15.27 1.61h2.97l-6.49 7.41 7.63 10.09h-5.98l-4.68-6.12-5.35 6.12H.39l6.94-7.93L0 1.61h6.13l4.23 5.59 4.91-5.59Zm-1.04 15.7h1.65L5.4 3.3H3.63l10.6 14.01Z"/></svg>
+      X
+    </a>
+    <a class="hd-link" href="https://t.me/mojoaihq" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.1c.3-1.2-.4-1.7-1.2-1.4L2.7 9.6c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 10.7-6.7c.5-.3 1-.2.6.2l-8.7 7.8-.3 4.8c.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.3 1.7-.8l3.2-14.5Z"/></svg>
+      Telegram
+    </a>
+  </nav>
+</header>
+
+<main>
+  <!-- ════════ PLATE I — HERO ════════ -->
+  <section class="hero">
+    <div class="frame" aria-hidden="true"></div>
+
+    <div class="hero-etch" aria-hidden="true">
+      <svg class="sun boil" style="top: 12%; left: 32%; width: clamp(54px, 6.5vw, 96px); height: clamp(54px, 6.5vw, 96px);" viewBox="0 0 100 100"><use href="#sunburst"/></svg>
+      <svg class="sun boil" style="bottom: 13%; right: 33%; width: clamp(44px, 5.5vw, 80px); height: clamp(44px, 5.5vw, 80px); animation-direction: reverse;" viewBox="0 0 100 100"><use href="#sunburst"/></svg>
+    </div>
+
+    <figure class="spec spec-l" aria-hidden="true"></figure>
+    <figure class="spec spec-r" aria-hidden="true"></figure>
+
+    <div class="hero-core">
+      <span class="plate-cap stamp">Plate I</span>
+      <h1 class="stamp boil" style="transition-delay: 0.12s">Invest with <em>taste</em> mode.</h1>
+      <svg class="hero-rule boil stamp" style="transition-delay: 0.22s" viewBox="0 0 230 14"><use href="#rule"/></svg>
+      <p class="hero-sub stamp" style="transition-delay: 0.3s">Mojo is an all-in-one agentic trading OS.</p>
+
+      <div class="hero-form-zone stamp" style="transition-delay: 0.42s">
+        <form class="eform" id="eform" novalidate>
+          <input type="email" id="emailIn" inputmode="email" autocomplete="email" placeholder="Enter your email" aria-label="Email address" />
+          <button type="submit" id="emailBtn" disabled>
+            <span class="lbl">Get Early Access</span>
+          </button>
+        </form>
+        <p class="form-err" id="formErr" hidden></p>
+        <p class="hero-note">Follow the X first. We will open waitlist for email registry later</p>
+      </div>
+    </div>
+
+    <div class="cue" aria-hidden="true">
+      <svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v14M2 11l5 6 5-6"/></svg>
+    </div>
+  </section>
+
+  <!-- ════════ PLATE II — CELESTIAL TIMELINE ════════ -->
+  <section class="tl" id="tl">
+    <div class="urania-card" aria-hidden="true"></div>
+    <div class="tl-head">
+      <span class="plate-cap stamp">Plate II — 24h with Mojo</span>
+    </div>
+
+    <div class="tl-chart" id="tlChart">
+      <svg id="constellation" aria-hidden="true" preserveAspectRatio="none"></svg>
+
+      <article class="ev stamp">
+        <svg class="star boil" viewBox="0 0 64 64"><use href="#evstar"/></svg>
+        <p class="time">9:12 AM</p>
+        <p class="desc">You saw the setup. One sentence.
+<em>Mojo had it ready in 2 seconds.</em></p>
+      </article>
+
+      <article class="ev stamp">
+        <svg class="star boil" viewBox="0 0 64 64"><use href="#evstar"/></svg>
+        <p class="time">2:30 PM</p>
+        <p class="desc">You were about to revenge trade. Mojo showed you your pattern. <em>You paused.</em></p>
+      </article>
+
+      <article class="ev stamp">
+        <svg class="star boil" viewBox="0 0 64 64"><use href="#evstar"/></svg>
+        <p class="time">11:58 PM</p>
+        <p class="desc">New token listed. Your filter matched. Mojo surfaced it fast and bought it in 3 seconds. <em>You confirmed from bed.</em></p>
+      </article>
+
+      <article class="ev stamp">
+        <svg class="star boil" viewBox="0 0 64 64"><use href="#evstar"/></svg>
+        <p class="time">4:47 AM</p>
+        <p class="desc">BTC hit your level. Your plan was already set before bed. <em>Mojo execute.</em></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ════════ LETTERPRESS STATEMENT ════════ -->
+  <section class="stmt" id="stmt">
+    <svg class="sun boil" style="position:absolute; top: 14%; right: 9%; width: clamp(60px, 8vw, 110px); height: clamp(60px, 8vw, 110px);" viewBox="0 0 100 100" aria-hidden="true"><use href="#sunburst"/></svg>
+    <div class="stmt-inner">
+      <span class="plate-cap stamp">Colophon</span>
+      <p class="l1 boil" data-split>What you see here is real.</p>
+      <p class="l2 boil" data-split>What it can do is more.</p>
+    </div>
+  </section>
+
+  <!-- ════════ PLATE III — LIME CTA ════════ -->
+  <section class="cta">
+    <div class="hero-etch" aria-hidden="true" style="color:#23221c">
+      <div class="bug chip" style="top: 13%; left: 6%; width: clamp(84px, 9vw, 150px); aspect-ratio: 1; background-size: 480%; background-position: 50% 76%; transform: rotate(-7deg);"></div>
+      <div class="bug chip" style="top: 54%; right: 5%; width: clamp(74px, 8vw, 130px); aspect-ratio: 1; background-size: 560%; background-position: 24% 31%; transform: rotate(8deg);"></div>
+      <div class="bug chip" style="bottom: 24%; left: 11%; width: clamp(64px, 7vw, 112px); aspect-ratio: 1; background-size: 580%; background-position: 66% 9%; transform: rotate(-4deg);"></div>
+      <div class="bfly chip" style="top: 16%; right: 12%; width: clamp(72px, 8vw, 128px); aspect-ratio: 1; background-size: 420%; background-position: 47% 51%; transform: rotate(5deg);"></div>
+    </div>
+
+    <div class="cta-inner stamp">
+      <span class="plate-cap">Plate III</span>
+      <h2 class="boil">Your <em>edge</em> is waiting.</h2>
+      <p class="cta-sub">Be first. Trade with intent. Let Mojo handle the rest.</p>
+      <a class="cta-btn" href="https://x.com/MojoAI_HQ/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15.27 1.61h2.97l-6.49 7.41 7.63 10.09h-5.98l-4.68-6.12-5.35 6.12H.39l6.94-7.93L0 1.61h6.13l4.23 5.59 4.91-5.59Zm-1.04 15.7h1.65L5.4 3.3H3.63l10.6 14.01Z"/></svg>
+        Follow the launch
+      </a>
+    </div>
+
+    <div class="wm" aria-hidden="true"><svg class="boil" viewBox="0 0 248 103"><use href="#mojoLogo"/></svg></div>
+
+    <footer class="ft">
+      <span class="meta">mojo — the agentic trading os</span>
+      <div class="links">
+        <a href="https://docs.mojo.trade/" target="_blank" rel="noopener noreferrer" aria-label="Docs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </a>
+        <a href="https://x.com/MojoAI_HQ/" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15.27 1.61h2.97l-6.49 7.41 7.63 10.09h-5.98l-4.68-6.12-5.35 6.12H.39l6.94-7.93L0 1.61h6.13l4.23 5.59 4.91-5.59Zm-1.04 15.7h1.65L5.4 3.3H3.63l10.6 14.01Z"/></svg>
+        </a>
+        <a href="https://t.me/mojoaihq" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.1c.3-1.2-.4-1.7-1.2-1.4L2.7 9.6c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 10.7-6.7c.5-.3 1-.2.6.2l-8.7 7.8-.3 4.8c.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.3 1.7-.8l3.2-14.5Z"/></svg>
+        </a>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<script>
+// loader
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 700);
+});
+
+// stamp entrances
+const io = new IntersectionObserver((es) => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.2 });
+document.querySelectorAll('.stamp').forEach(el => io.observe(el));
+
+// word-split for letterpress statement
+document.querySelectorAll('[data-split]').forEach(p => {
+  const words = p.textContent.trim().split(/\s+/);
+  p.textContent = '';
+  words.forEach((w, i) => {
+    const s = document.createElement('span');
+    s.className = 'w';
+    s.style.transitionDelay = (i * 0.045) + 's';
+    s.textContent = w;
+    p.appendChild(s);
+    if (i < words.length - 1) p.appendChild(document.createTextNode(' '));
+  });
+});
+const stmt = document.querySelector('.stmt');
+if (stmt) {
+  const io2 = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { stmt.classList.add('in'); io2.disconnect(); } });
+  }, { threshold: 0.35 });
+  io2.observe(stmt);
+}
+
+// constellation: connect the event stars with dashed etched lines
+const chart = document.getElementById('tlChart');
+const svg = document.getElementById('constellation');
+function drawConstellation(){
+  if (!chart || !svg) return;
+  const cr = chart.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${cr.width} ${cr.height}`);
+  svg.innerHTML = '';
+  const stars = chart.querySelectorAll('.ev .star');
+  const pts = [];
+  stars.forEach(st => {
+    const r = st.getBoundingClientRect();
+    pts.push([r.left - cr.left + r.width/2, r.top - cr.top + r.height/2]);
+  });
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x1,y1] = pts[i], [x2,y2] = pts[i+1];
+    const mx = (x1+x2)/2, my = (y1+y2)/2;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', `M${x1},${y1} Q${mx},${y1} ${mx},${my} T${x2},${y2}`);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','#cdf54655');
+    path.setAttribute('stroke-width','1');
+    path.setAttribute('stroke-dasharray','0.5 6');
+    path.setAttribute('stroke-linecap','round');
+    svg.appendChild(path);
+  }
+}
+window.addEventListener('load', drawConstellation);
+window.addEventListener('resize', drawConstellation);
+
+// email form: enable button only on valid email
+const emailIn = document.getElementById('emailIn');
+const emailBtn = document.getElementById('emailBtn');
+const formErr = document.getElementById('formErr');
+const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+emailIn.addEventListener('input', () => { emailBtn.disabled = !re.test(emailIn.value.trim()); formErr.hidden = true; });
+document.getElementById('eform').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!re.test(emailIn.value.trim())) { formErr.textContent = 'Please enter a valid email.'; formErr.hidden = false; return; }
+  emailBtn.querySelector('.lbl').textContent = 'Noted ✳';
+  emailBtn.disabled = true;
+});
+</script>
+</body>
+</html>
