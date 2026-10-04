@@ -96,6 +96,38 @@ html[data-theme="dark"] .rep-frame{box-shadow:6px 7px 0 rgba(0,0,0,.5)}
 .tk-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
 .tk-h{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:3px}
 
+/* specimen plates */
+.plate-bench{background:var(--mpaper);position:relative;border:1px solid var(--ink);box-shadow:6px 7px 0 rgba(0,0,0,.14);padding:clamp(42px,6vw,76px) clamp(18px,4vw,56px) clamp(32px,4vw,50px);display:flex;gap:clamp(22px,4.5vw,56px);justify-content:center;flex-wrap:wrap}
+html[data-theme="dark"] .plate-bench{box-shadow:6px 7px 0 rgba(0,0,0,.5)}
+.plate-bench:before{content:"";position:absolute;inset:10px;border:1px solid rgba(205,245,70,.38);pointer-events:none}
+.plate-bench:after{content:"";position:absolute;inset:15px;border:1px solid rgba(205,245,70,.15);pointer-events:none}
+.sp-plate{margin:0;width:clamp(160px,24vw,250px);position:relative}
+.sp-mat{background:#f6f1e2;padding:10px 10px 12px;border:1px solid #23221c;outline:1px solid rgba(205,245,70,.35);outline-offset:3px;box-shadow:6px 7px rgba(205,245,70,.1);transition:transform .25s steps(3,end)}
+.sp-plate.p1 .sp-mat{transform:rotate(-2.4deg)}
+.sp-plate.p2 .sp-mat{transform:rotate(1.6deg)}
+.sp-plate.p3 .sp-mat{transform:rotate(-1.2deg)}
+.sp-plate:hover .sp-mat{transform:rotate(0)}
+.sp-mat img{display:block;width:100%;height:210px;object-fit:cover}
+.sp-plate.p1 img{object-position:50% 15%}
+.sp-plate.p2 img{object-position:50% 70%}
+.sp-plate.p3 img{object-position:50% 35%}
+.sp-cap{margin-top:16px;text-align:center;color:#e9e5d4}
+.sp-cap .fle{display:inline-flex;align-items:center;gap:14px;font-family:var(--mono);font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:rgba(233,229,212,.65)}
+.sp-cap .fle:before,.sp-cap .fle:after{content:"❦";font-family:var(--font-display);font-size:12px;letter-spacing:0;color:rgba(205,245,70,.7)}
+.sp-cap i{display:block;font-family:var(--font-display);font-size:19px;margin-top:7px;color:#f4efe2}
+.sp-cap .lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:rgba(233,229,212,.53);margin-top:5px}
+/* duotone demo */
+.duo-strip{display:grid;grid-template-columns:300px 1fr;gap:26px;margin-top:22px;align-items:center;border:1px solid var(--hairline);background:var(--panel);padding:22px 24px}
+@media(max-width:760px){.duo-strip{grid-template-columns:1fr}}
+.duo-demo{background:#0b0b09;padding:14px;border:1px solid #23221c;outline:1px solid rgba(205,245,70,.3);outline-offset:3px;box-shadow:6px 7px rgba(205,245,70,.1)}
+.duo-demo img{display:block;width:100%;height:170px;object-fit:cover;object-position:50% 70%}
+.duo-demo img.duo{mix-blend-mode:screen;filter:grayscale(1) invert(.94) sepia(.9) saturate(2.6) hue-rotate(33deg) contrast(1.06)}
+.duo-info .dl{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.duo-info code{display:block;margin-top:12px;font-family:var(--mono);font-size:11.5px;line-height:1.8;color:var(--ink2);background:var(--accent-soft);padding:12px 14px;border:1px solid var(--hairline);overflow-x:auto}
+.duo-btn{margin-top:14px;border:1px solid var(--ink);background:transparent;color:var(--ink);padding:9px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.duo-btn:hover{background:var(--ink);color:var(--paper)}
+.cred-note{margin-top:16px;font-size:12px;color:var(--ink3)}
+
 /* four questions — FAQ */
 .faq{border:1px solid var(--hairline);background:var(--panel)}
 details.faq-item{border-bottom:1px solid var(--hairline)}
@@ -163,9 +195,53 @@ footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
   <div class="rule-grid" id="rule-grid"></div>
 </section>
 
+<section id="plates">
+  <div class="sec-head">
+    <div class="sec-no">03 · SPECIMEN PLATES</div>
+    <h2><span class="zh">标本图版——<em>图谱气质</em>的另一半</span><span class="en">Specimen plates — the other half of the look</span></h2>
+    <p class="sec-sub"><span class="zh">配色与字体只是一半；另一半是标本版画 imagery：奶油衬底的实物卡（.spec）、双细线框 + 硬偏移阴影、轻微歪斜——以及让任意图片变成同款版画的 duotone 滤镜配方。下面全部在线渲染。</span>
+    <span class="en">Palette and type are half of it; the other half is engraved-specimen imagery: cream-matted plate cards (.spec), double hairlines + hard offset shadows, slight tilt — plus a duotone filter that turns any image into a matching plate. All rendered live below.</span></p>
+  </div>
+  <div class="plate-bench">
+    <figure class="sp-plate p1">
+      <div class="sp-mat"><img src="replica/papillons.jpg" alt="Papillons — butterfly plate crop" loading="lazy"></div>
+      <figcaption class="sp-cap">
+        <span class="fle">Plate I</span>
+        <i>Papillons</i>
+        <span class="lbl"><span class="zh">蝶 · hero 标本卡（.spec）裁片</span><span class="en">butterflies · hero .spec card crop</span></span>
+      </figcaption>
+    </figure>
+    <figure class="sp-plate p2">
+      <div class="sp-mat"><img src="replica/bugs.jpg" alt="Insecta — beetle plate crop" loading="lazy"></div>
+      <figcaption class="sp-cap">
+        <span class="fle">Plate II</span>
+        <i>Insecta</i>
+        <span class="lbl"><span class="zh">虫 · CTA 印章 chips（.chip）裁片</span><span class="en">insects · CTA .chip stamps crop</span></span>
+      </figcaption>
+    </figure>
+    <figure class="sp-plate p3">
+      <div class="sp-mat"><img src="replica/urania.jpg" alt="Urania — moth plate crop" loading="lazy"></div>
+      <figcaption class="sp-cap">
+        <span class="fle">Plate III</span>
+        <i>Urania</i>
+        <span class="lbl"><span class="zh">蛾 · 星图时间线卡（.urania-card）裁片</span><span class="en">moths · .urania-card crop</span></span>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="duo-strip">
+    <div class="duo-demo"><img id="duo-img" class="duo" src="replica/bugs.jpg" alt="duotone filter demo" loading="lazy"></div>
+    <div class="duo-info">
+      <div class="dl">CHIP-DUOTONE · <span class="zh">任意图 → 同款标本版画</span><span class="en">any image → matching plate</span></div>
+      <code>.chip-duotone{mix-blend-mode:screen;<br>filter:grayscale(1) invert(.94) sepia(.9) saturate(2.6)<br>&nbsp;&nbsp;hue-rotate(33deg) contrast(1.06)}</code>
+      <button class="duo-btn" id="duo-btn" onclick="toggleDuo()"><span class="zh">DUOTONE 开 · 看原图</span><span class="en">DUOTONE ON · SHOW ORIGINAL</span></button>
+    </div>
+  </div>
+  <p class="cred-note"><span class="zh">※ 图版素材为 mojo.trade 页面裁片，仅作学习参照（与 SKILL.md Credits 一致）；商用前请替换为自有素材。</span><span class="en">※ Plate crops come from mojo.trade, for study only (per SKILL.md credits) — swap in your own imagery before commercial use.</span></p>
+</section>
+
 <section id="replica">
   <div class="sec-head">
-    <div class="sec-no">03 · LIVE REPLICA</div>
+    <div class="sec-no">04 · LIVE REPLICA</div>
     <h2><span class="zh">完整 Replica · 在线渲染</span><span class="en">The full replica, rendered live</span></h2>
     <p class="sec-sub"><span class="zh">下面就是仓库里 replica/index.html 的在线渲染——所有模式装配在一起的成品参照。</span><span class="en">This is the repo's own replica/index.html, live — every pattern assembled.</span></p>
   </div>
@@ -178,14 +254,14 @@ footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
 
 <section id="tokens">
   <div class="sec-head">
-    <div class="sec-no">04 · TOKENS</div>
+    <div class="sec-no">05 · TOKENS</div>
     <h2><span class="zh">纸与墨，与那<em>唯一</em>的酸绿</span><span class="en">Paper, ink, and the one acid accent</span></h2>
   </div>
   <div class="tok" id="tok-grid"></div>
 </section>
 
 <section id="why">
-  <div class="sec-head"><div class="sec-no">05 · FAQ</div><h2><span class="zh">常见问题 · 四问速览</span><span class="en">FAQ · The four questions</span></h2></div>
+  <div class="sec-head"><div class="sec-no">06 · FAQ</div><h2><span class="zh">常见问题 · 四问速览</span><span class="en">FAQ · The four questions</span></h2></div>
   <div class="faq">
     <details class="faq-item" open>
       <summary><span class="qm">Q.1</span><span class="qt"><span class="zh">这个项目解决什么问题？</span><span class="en">What problem does it solve?</span></span><span class="qc">＋</span></summary>
@@ -201,7 +277,7 @@ footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
     </details>
     <details class="faq-item">
       <summary><span class="qm">Q.4</span><span class="qt"><span class="zh">我能复用 / 抄走什么？</span><span class="en">What can I reuse?</span></span><span class="qc">＋</span></summary>
-      <div class="qa"><span class="zh">① 整包复制进 skills 目录即触发；② tokens.css 独立可用（换 accent 四件套一起换）；③ duotone 滤镜配方让任何图变标本版画；④ 「Plate I/II/III」图册叙事结构可套任何内容。</span><span class="en">Drop-in skill; standalone tokens.css; duotone recipe turns any image into a specimen plate; atlas narrative fits any content.</span></div>
+      <div class="qa"><span class="zh">① 整包复制进 skills 目录即触发；② tokens.css 独立可用（换 accent 四件套一起换）；③ duotone 滤镜配方让任何图变标本版画（见上方 03 节在线演示）；④ 「Plate I/II/III」图册叙事结构可套任何内容。</span><span class="en">Drop-in skill; standalone tokens.css; duotone recipe turns any image into a specimen plate (see Section 03); atlas narrative fits any content.</span></div>
     </details>
   </div>
 </section>
@@ -267,6 +343,12 @@ function renderScen(){
   </div></div>`;
 }
 function pickScen(i){curScen=i;renderScen();}
+let duoOn=true;
+function toggleDuo(){duoOn=!duoOn;
+ document.getElementById("duo-img").classList.toggle("duo",duoOn);
+ document.getElementById("duo-btn").innerHTML=duoOn
+  ?`<span class="zh">DUOTONE 开 · 看原图</span><span class="en">DUOTONE ON · SHOW ORIGINAL</span>`
+  :`<span class="zh">原图 · 点我变版画</span><span class="en">ORIGINAL · APPLY DUOTONE</span>`;}
 function renderRules(){
  document.getElementById("rule-grid").innerHTML=RULES.map(r=>`
   <div class="rule"><b>${r.b}</b><span><span class="zh">${r.zh}</span><span class="en">${r.en}</span></span></div>`).join("");
