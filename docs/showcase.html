@@ -96,13 +96,20 @@ html[data-theme="dark"] .rep-frame{box-shadow:6px 7px 0 rgba(0,0,0,.5)}
 .tk-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
 .tk-h{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:3px}
 
-/* four questions */
-.q{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--hairline)}
-.q:first-of-type{border-top:0}
-@media(max-width:820px){.q{grid-template-columns:1fr;gap:8px}}
-.q-t{font-family:var(--font-display);font-size:17px}
-.q-t span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-top:4px}
-.q-b{color:var(--ink2);font-size:14px} .q-b b{color:var(--ink)}
+/* four questions — FAQ */
+.faq{border:1px solid var(--hairline);background:var(--panel)}
+details.faq-item{border-bottom:1px solid var(--hairline)}
+details.faq-item:last-child{border-bottom:0}
+details.faq-item summary{cursor:pointer;list-style:none;display:flex;gap:16px;align-items:baseline;padding:17px 20px}
+details.faq-item summary::-webkit-details-marker{display:none}
+details.faq-item summary:hover .qt{color:var(--accent)}
+details.faq-item summary .qm{font-family:var(--mono);color:var(--accent);font-size:10.5px;letter-spacing:.22em;min-width:52px;text-transform:uppercase}
+details.faq-item summary .qt{flex:1;font-family:var(--font-display);font-size:17px;font-weight:400}
+details.faq-item summary .qc{color:var(--ink3);font-family:var(--mono);font-size:13px;transition:transform .15s ease}
+details.faq-item[open] summary .qc{transform:rotate(45deg)}
+details.faq-item .qa{padding:0 20px 20px 88px;color:var(--ink2);font-size:14px;line-height:1.75}
+details.faq-item .qa b{color:var(--ink)}
+@media(max-width:700px){details.faq-item .qa{padding-left:20px}}
 footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
 .fm{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .legal{margin-top:14px;padding-top:14px;border-top:1px solid var(--hairline);max-width:86ch}
@@ -178,22 +185,24 @@ footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
 </section>
 
 <section id="why">
-  <div class="sec-head"><div class="sec-no">05 · FOUR QUESTIONS</div><h2><span class="zh">四问速览</span><span class="en">Four questions</span></h2></div>
-  <div class="q">
-    <div class="q-t"><span class="zh">解决什么问题</span><span class="en">Problem</span></div>
-    <div class="q-b"><span class="zh">想要 mojo.trade 那种「雕版图谱」质感时，每次都要从零逆向。本技能把整套语言工程化：token、motif、蓝图、文案腔调、replica 参照，一次提炼反复使用。</span><span class="en">That mojo.trade feel used to require reverse-engineering from scratch. This skill industrializes it: tokens, motifs, blueprints, copy voice, replica.</span></div>
-  </div>
-  <div class="q">
-    <div class="q-t"><span class="zh">什么场景，什么结果</span><span class="en">Scenario → Outcome</span></div>
-    <div class="q-b"><span class="zh">交易/金融产品 launch 页、waitlist 页、编辑感 hero——对 Agent 说「用 Mojo Plate 做」即得整套印刷纪律；手写时抄 tokens.css + sections.md 也能直接开工。</span><span class="en">Trading/fintech launch pages, waitlists, editorial heroes — ask your agent "use Mojo Plate" and the print discipline arrives whole.</span></div>
-  </div>
-  <div class="q">
-    <div class="q-t"><span class="zh">什么结构</span><span class="en">Architecture</span></div>
-    <div class="q-b"><span class="zh">SKILL.md（触发 + 非协商规则）→ references/tokens.css（全 token + 工具类）→ references/motifs.svg（boil 滤镜 + 日纹 symbol 库）→ references/sections.md（四个蓝图 + 文案腔调）→ replica/（完整成品）。</span><span class="en">SKILL.md → tokens.css → motifs.svg → sections.md → replica/. Each layer usable alone.</span></div>
-  </div>
-  <div class="q">
-    <div class="q-t"><span class="zh">能复用什么</span><span class="en">Value & Reuse</span></div>
-    <div class="q-b"><span class="zh">① 整包复制进 skills 目录即触发；② tokens.css 独立可用（换 accent 四件套一起换）；③ duotone 滤镜配方让任何图变标本版画；④ 「Plate I/II/III」图册叙事结构可套任何内容。</span><span class="en">Drop-in skill; standalone tokens.css; duotone recipe turns any image into a specimen plate; atlas narrative fits any content.</span></div>
+  <div class="sec-head"><div class="sec-no">05 · FAQ</div><h2><span class="zh">常见问题 · 四问速览</span><span class="en">FAQ · The four questions</span></h2></div>
+  <div class="faq">
+    <details class="faq-item" open>
+      <summary><span class="qm">Q.1</span><span class="qt"><span class="zh">这个项目解决什么问题？</span><span class="en">What problem does it solve?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">想要 mojo.trade 那种「雕版图谱」质感时，每次都要从零逆向。本技能把整套语言工程化：token、motif、蓝图、文案腔调、replica 参照，一次提炼反复使用。</span><span class="en">That mojo.trade feel used to require reverse-engineering from scratch. This skill industrializes it: tokens, motifs, blueprints, copy voice, replica.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="qm">Q.2</span><span class="qt"><span class="zh">什么场景下用？能得到什么结果？</span><span class="en">In what scenario, with what outcome?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">交易/金融产品 launch 页、waitlist 页、编辑感 hero——对 Agent 说「用 Mojo Plate 做」即得整套印刷纪律；手写时抄 tokens.css + sections.md 也能直接开工。</span><span class="en">Trading/fintech launch pages, waitlists, editorial heroes — ask your agent "use Mojo Plate" and the print discipline arrives whole.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="qm">Q.3</span><span class="qt"><span class="zh">内部是什么结构？</span><span class="en">How is it structured?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">SKILL.md（触发 + 非协商规则）→ references/tokens.css（全 token + 工具类）→ references/motifs.svg（boil 滤镜 + 日纹 symbol 库）→ references/sections.md（四个蓝图 + 文案腔调）→ replica/（完整成品）。</span><span class="en">SKILL.md → tokens.css → motifs.svg → sections.md → replica/. Each layer usable alone.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="qm">Q.4</span><span class="qt"><span class="zh">我能复用 / 抄走什么？</span><span class="en">What can I reuse?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">① 整包复制进 skills 目录即触发；② tokens.css 独立可用（换 accent 四件套一起换）；③ duotone 滤镜配方让任何图变标本版画；④ 「Plate I/II/III」图册叙事结构可套任何内容。</span><span class="en">Drop-in skill; standalone tokens.css; duotone recipe turns any image into a specimen plate; atlas narrative fits any content.</span></div>
+    </details>
   </div>
 </section>
 
