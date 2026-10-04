@@ -1,0 +1,34 @@
+{
+  "slug": "mojo-plate-design",
+  "type": "design-skill + replica",
+  "archetype": "style-tryon",
+  "oneLiner": {
+    "zh": "从 mojo.trade 逆向的「雕版图谱」设计技能：近黑暖纸 + 骨白墨 + 唯一酸绿，Instrument Serif 斜体 + steps() 印刷动效，含完整 replica",
+    "en": "An engraved-atlas design skill distilled from mojo.trade: warm near-black paper, bone ink, one acid accent, serif italics, steps() print motion, full replica included"
+  },
+  "audience": {
+    "zh": "要给交易/金融产品做 launch/waitlist 页、且想要印刷质感而非 SaaS 模板感的设计者与 Agent 使用者",
+    "en": "Designers and agent users building launch/waitlist pages for trading/fintech who want print-shop feel over SaaS templates"
+  },
+  "facts": {
+    "nonNegotiables": 8,
+    "sectionBlueprints": 4,
+    "palette": {"paper": "#0b0b09", "ink": "#e9e5d4", "accent": "#cdf546", "accentDeep": "#b8e032"},
+    "typeTrio": ["Instrument Serif (display italics)", "Inter 300 (body)", "JetBrains Mono (micro-labels)"],
+    "signatureEffects": ["steps(2-4,end) easing", "film grain overlay", "boil turbulence filter", "70-90s celestial spin", "hard offset shadows", "zero border-radius"],
+    "installTargets": ["agents skills dirs", "Kimi", "project .agents/skills"]
+  },
+  "links": {
+    "showcase": "https://78tyih.github.io/mojo-plate-design/showcase.html",
+    "replica": "https://78tyih.github.io/mojo-plate-design/replica/index.html",
+    "repo": "https://github.com/78tyih/mojo-plate-design"
+  },
+  "evidence": {
+    "rulesAndPalette": "Observed — verbatim from SKILL.md Non-negotiables + references/tokens.css",
+    "blueprints": "Observed — references/sections.md lists 4 archetypes (hero plate, celestial timeline, colophon, inverse CTA)",
+    "replicaSelfContained": "Observed — replica/index.html references only same-dir jpgs + Google Fonts",
+    "liveRendering": "Observed — docs/replica served via GitHub Pages, showcase iframe loads it directly",
+    "agentTriggerE2E": "Unknown — no recorded agent run using this skill in-repo"
+  },
+  "updated": "2026-10-05"
+}

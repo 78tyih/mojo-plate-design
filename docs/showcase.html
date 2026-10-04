@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Mojo Plate Design — Engraved Atlas 设计语言 · 交互展示</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F3EE; --panel:#FFFFFF; --ink:#17150F; --ink2:#5C584C; --ink3:#8F8A79;
+  --hairline:rgba(23,21,15,.14); --accent:#5A6B00; --accent2:#cdf546; --accent-soft:rgba(90,107,0,.08);
+  --mpaper:#0b0b09; --mink:#e9e5d4; --mlime:#cdf546;
+  --font-body:"Inter","Noto Sans SC",system-ui,sans-serif; --font-display:"Instrument Serif",serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+html[data-theme="dark"]{
+  --paper:#12110D; --panel:#1A1913; --ink:#ECE8D8; --ink2:#B0AB97; --ink3:#6E6A5B;
+  --hairline:rgba(236,232,216,.15); --accent:#cdf546; --accent-soft:rgba(205,245,70,.09);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);margin:0;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:0 34px}
+.en{display:none} html[data-lang="en"] .en{display:inline} html[data-lang="en"] .zh{display:none}
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--hairline)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:15px 34px;max-width:1140px;margin:0 auto}
+.logo{font-family:var(--font-display);font-size:20px;text-decoration:none}.logo b{color:var(--accent);font-style:italic}
+.hd-right{display:flex;gap:8px}
+.tgl{border:1px solid var(--hairline);background:transparent;color:var(--ink2);border-radius:0;padding:5px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)}
+.tgl:hover{color:var(--ink);border-color:var(--ink3)} .tgl.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hero{padding:84px 0 60px;border-bottom:1px solid var(--hairline)}
+.kicker{display:flex;align-items:center;gap:14px;font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--ink2);font-family:var(--mono)}
+.kicker::before{content:"";width:34px;height:1px;background:var(--ink3)}
+h1{font-family:var(--font-display);font-size:clamp(2.4rem,5vw,3.9rem);line-height:1.08;letter-spacing:-.01em;font-weight:400;margin:24px 0 0;max-width:24ch}
+h1 em{font-style:italic;color:var(--accent)}
+.sub{max-width:64ch;color:var(--ink2);font-size:15px;margin:20px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:0;margin-top:26px}
+.chip{border:1px solid var(--hairline);border-radius:0;padding:7px 15px;font-size:11.5px;color:var(--ink2);background:var(--panel);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.chip+.chip{border-left:0}
+.chip b{color:var(--accent);font-weight:500}
+.cta{display:flex;gap:0;margin-top:32px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--ink);background:transparent;color:var(--ink);transition:all .15s ease;cursor:pointer;font-family:var(--font-body)}
+.btn--accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn+.btn{border-left:0}
+.btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+section{padding:64px 0;border-bottom:1px solid var(--hairline)}
+.sec-no{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+h2{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:400;margin:8px 0 0}
+h2 em{font-style:italic;color:var(--accent)}
+.sec-sub{color:var(--ink2);font-size:14px;margin-top:10px;max-width:66ch}
+
+/* scenario tabs */
+.sc-tabs{display:flex;flex-direction:column;gap:0;border:1px solid var(--hairline);border-bottom:0;background:var(--panel)}
+.sc-tab{border:0;border-bottom:1px solid var(--hairline);background:transparent;color:var(--ink2);padding:15px 20px;font-size:14px;cursor:pointer;font-family:var(--font-body);text-align:left;display:flex;gap:14px;align-items:baseline}
+.sc-tab i{font-family:var(--mono);font-style:normal;font-size:11px;color:var(--ink3);min-width:26px}
+.sc-tab:hover{color:var(--ink)}
+.sc-tab.on{color:var(--ink);background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.sc-panel{border:1px solid var(--hairline);border-top:0;background:var(--panel);padding:26px 30px 30px}
+@media(max-width:700px){.sc-panel{padding:20px 18px}}
+.sc-flex{display:grid;grid-template-columns:1.1fr .9fr;gap:26px}
+@media(max-width:880px){.sc-flex{grid-template-columns:1fr}}
+.sc-quote{border-left:2px solid var(--accent);padding:8px 0 8px 18px;font-size:13.5px;color:var(--ink2);margin-top:18px}
+.sc-quote b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.vs{display:flex;flex-direction:column;gap:0;border:1px solid var(--hairline)}
+.vs-card{padding:16px 20px;font-size:13.5px;line-height:1.7;color:var(--ink2)}
+.vs-card+.vs-card{border-top:1px solid var(--hairline)}
+.vs-card b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:7px}
+.vs-no b{color:var(--ink3)}
+.vs-yes{background:var(--accent-soft)} .vs-yes b{color:var(--accent)}
+
+/* rules grid */
+.rule-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--hairline);background:var(--panel)}
+@media(max-width:960px){.rule-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.rule-grid{grid-template-columns:1fr}}
+.rule{padding:20px 20px 22px;border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.rule:nth-child(4n){border-right:0}
+@media(max-width:960px){.rule:nth-child(4n){border-right:1px solid var(--hairline)}.rule:nth-child(2n){border-right:0}}
+@media(max-width:560px){.rule{border-right:0!important}}
+.rule b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.rule span{font-size:13px;color:var(--ink2)}
+
+/* replica frame */
+.rep-frame{border:1px solid var(--ink);box-shadow:6px 7px 0 rgba(0,0,0,.14);background:#0b0b09;height:600px;position:relative;overflow:hidden}
+html[data-theme="dark"] .rep-frame{box-shadow:6px 7px 0 rgba(0,0,0,.5)}
+.rep-frame iframe{width:1280px;height:820px;border:0;position:absolute;left:50%;top:50%;margin-left:-486px;margin-top:-312px;transform:scale(.76);transform-origin:0 0}
+.rep-meta{display:flex;justify-content:space-between;gap:14px;padding:12px 2px 0;font-size:12px;color:var(--ink2);flex-wrap:wrap}
+.rep-meta a{color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+
+/* tokens */
+.tok{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--hairline);background:var(--panel)}
+@media(max-width:760px){.tok{grid-template-columns:repeat(2,1fr)}}
+.tk{border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.tk:nth-child(4n){border-right:0}
+@media(max-width:760px){.tk:nth-child(4n){border-right:1px solid var(--hairline)}.tk:nth-child(2n){border-right:0}}
+.tk-sw{height:86px}
+.tk-b{padding:12px 14px 14px}
+.tk-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.tk-h{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:3px}
+
+/* four questions */
+.q{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--hairline)}
+.q:first-of-type{border-top:0}
+@media(max-width:820px){.q{grid-template-columns:1fr;gap:8px}}
+.q-t{font-family:var(--font-display);font-size:17px}
+.q-t span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-top:4px}
+.q-b{color:var(--ink2);font-size:14px} .q-b b{color:var(--ink)}
+footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
+.fm{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.legal{margin-top:14px;padding-top:14px;border-top:1px solid var(--hairline);max-width:86ch}
+</style>
+</head>
+<body>
+<header><div class="hd">
+  <a class="logo" href="#">Mojo <b>Plate</b> Design</a>
+  <div class="hd-right">
+    <button class="tgl on" id="lang-zh" onclick="setLang('zh')">中</button>
+    <button class="tgl" id="lang-en" onclick="setLang('en')">EN</button>
+    <button class="tgl on" id="th-light" onclick="setTheme('light')">☀︎</button>
+    <button class="tgl" id="th-dark" onclick="setTheme('dark')">☾</button>
+  </div>
+</div></header>
+
+<div class="wrap">
+<section class="hero">
+  <div class="kicker">DESIGN SKILL · ENGRAVED ATLAS <span style="color:var(--ink3)">·</span> REVERSE-ENGINEERED FROM MOJO.TRADE</div>
+  <h1><span class="zh">把 landing 页做成一册<em>雕版图谱</em></span><span class="en">Make your landing page an <em>engraved atlas</em></span></h1>
+  <p class="sub"><span class="zh">从 mojo.trade 逆向出的完整设计语言：近黑暖纸、骨白墨色、唯一酸绿强调、Instrument Serif 斜体、JetBrains Mono 微标签、蚀刻日纹 SVG、胶片颗粒、steps() 印刷动效。一份 tokens.css + 一组 motif + 四个 section 蓝图 + 一个完整 replica——当技能装进 Agent，或当设计系统手抄，都行。</span>
+  <span class="en">A complete design language reverse-engineered from mojo.trade: near-black warm paper, bone ink, one acid accent, Instrument Serif italics, JetBrains Mono micro-labels, etched sunburst motifs, film grain, steps() print-block motion. One tokens.css, one motif set, four section blueprints, one full replica — as an agent skill or a hand-rolled system.</span></p>
+  <div class="chips">
+    <span class="chip"><b>1</b> accent <span class="zh">绝不用第二种强调色</span><span class="en">never a second accent</span></span>
+    <span class="chip"><b>0</b> border-radius</span>
+    <span class="chip">steps(2–4, end)</span>
+    <span class="chip"><b>4</b> plate <span class="zh">蓝图</span><span class="en">blueprints</span></span>
+    <span class="chip"><b>1</b> <span class="zh">完整 replica</span><span class="en">full replica</span></span>
+  </div>
+  <div class="cta">
+    <a class="btn btn--accent" href="#replica"><span class="zh">在线看完整 Replica ↓</span><span class="en">View the live replica ↓</span></a>
+    <a class="btn" href="https://github.com/78tyih/mojo-plate-design">GitHub</a>
+  </div>
+</section>
+
+<section id="when">
+  <div class="sec-head">
+    <div class="sec-no">01 · WHEN TO USE</div>
+    <h2><span class="zh">什么情况下，才需要这个技能</span><span class="en">When you actually need it</span></h2>
+    <p class="sec-sub"><span class="zh">点开对应你的处境——判定问题全部来自 SKILL.md 的触发描述原文。</span><span class="en">Find your situation — criteria come verbatim from the SKILL.md trigger description.</span></p>
+  </div>
+  <div class="sc-tabs" id="sc-tabs"></div>
+  <div class="sc-panel" id="sc-panel"></div>
+</section>
+
+<section id="rules">
+  <div class="sec-head">
+    <div class="sec-no">02 · NON-NEGOTIABLES</div>
+    <h2><span class="zh">八条非协商规则——<em>少一条就不「Mojo」</em></span><span class="en">Eight non-negotiables — break one and it stops reading "Mojo"</span></h2>
+  </div>
+  <div class="rule-grid" id="rule-grid"></div>
+</section>
+
+<section id="replica">
+  <div class="sec-head">
+    <div class="sec-no">03 · LIVE REPLICA</div>
+    <h2><span class="zh">完整 Replica · 在线渲染</span><span class="en">The full replica, rendered live</span></h2>
+    <p class="sec-sub"><span class="zh">下面就是仓库里 replica/index.html 的在线渲染——所有模式装配在一起的成品参照。</span><span class="en">This is the repo's own replica/index.html, live — every pattern assembled.</span></p>
+  </div>
+  <div class="rep-frame"><iframe id="rep-iframe" title="mojo replica" loading="lazy"></iframe></div>
+  <div class="rep-meta">
+    <span>replica/index.html · 1280×820 · scale .76</span>
+    <a href="replica/index.html" target="_blank"><span class="zh">新窗口打开原页 ↗</span><span class="en">OPEN FULL PAGE ↗</span></a>
+  </div>
+</section>
+
+<section id="tokens">
+  <div class="sec-head">
+    <div class="sec-no">04 · TOKENS</div>
+    <h2><span class="zh">纸与墨，与那<em>唯一</em>的酸绿</span><span class="en">Paper, ink, and the one acid accent</span></h2>
+  </div>
+  <div class="tok" id="tok-grid"></div>
+</section>
+
+<section id="why">
+  <div class="sec-head"><div class="sec-no">05 · FOUR QUESTIONS</div><h2><span class="zh">四问速览</span><span class="en">Four questions</span></h2></div>
+  <div class="q">
+    <div class="q-t"><span class="zh">解决什么问题</span><span class="en">Problem</span></div>
+    <div class="q-b"><span class="zh">想要 mojo.trade 那种「雕版图谱」质感时，每次都要从零逆向。本技能把整套语言工程化：token、motif、蓝图、文案腔调、replica 参照，一次提炼反复使用。</span><span class="en">That mojo.trade feel used to require reverse-engineering from scratch. This skill industrializes it: tokens, motifs, blueprints, copy voice, replica.</span></div>
+  </div>
+  <div class="q">
+    <div class="q-t"><span class="zh">什么场景，什么结果</span><span class="en">Scenario → Outcome</span></div>
+    <div class="q-b"><span class="zh">交易/金融产品 launch 页、waitlist 页、编辑感 hero——对 Agent 说「用 Mojo Plate 做」即得整套印刷纪律；手写时抄 tokens.css + sections.md 也能直接开工。</span><span class="en">Trading/fintech launch pages, waitlists, editorial heroes — ask your agent "use Mojo Plate" and the print discipline arrives whole.</span></div>
+  </div>
+  <div class="q">
+    <div class="q-t"><span class="zh">什么结构</span><span class="en">Architecture</span></div>
+    <div class="q-b"><span class="zh">SKILL.md（触发 + 非协商规则）→ references/tokens.css（全 token + 工具类）→ references/motifs.svg（boil 滤镜 + 日纹 symbol 库）→ references/sections.md（四个蓝图 + 文案腔调）→ replica/（完整成品）。</span><span class="en">SKILL.md → tokens.css → motifs.svg → sections.md → replica/. Each layer usable alone.</span></div>
+  </div>
+  <div class="q">
+    <div class="q-t"><span class="zh">能复用什么</span><span class="en">Value & Reuse</span></div>
+    <div class="q-b"><span class="zh">① 整包复制进 skills 目录即触发；② tokens.css 独立可用（换 accent 四件套一起换）；③ duotone 滤镜配方让任何图变标本版画；④ 「Plate I/II/III」图册叙事结构可套任何内容。</span><span class="en">Drop-in skill; standalone tokens.css; duotone recipe turns any image into a specimen plate; atlas narrative fits any content.</span></div>
+  </div>
+</section>
+
+<footer><div class="fm">
+  <div><b style="color:var(--ink2)">mojo-plate-design</b> · <span class="zh">技能包 + 参考实现</span><span class="en">skill pack + working replica</span></div>
+  <div><span class="zh">规则与文案逐字取自仓库 SKILL.md（Observed）</span><span class="en">Rules quoted verbatim from the repo's SKILL.md (Observed)</span></div>
+</div>
+<div class="legal"><span class="zh">署名与边界：设计语言逆向自 mojo.trade，仅作学习与参考。Mojo 字标与标本插图归原作者所有——商用前请替换（SKILL.md/README 已声明）。</span><span class="en">Credits: design reverse-engineered from mojo.trade for study. The Mojo wordmark and specimen illustrations belong to their owners — replace before commercial use.</span></div>
+</footer>
+</div>
+
+<script>
+const SCEN=[
+ {n:"01",tab:{zh:"要做一个 launch / waitlist 页，受够了蓝紫渐变 SaaS 模板",en:"A launch/waitlist page — done with purple-gradient SaaS templates"},
+  trig:{zh:"Use when the user asks to design a landing / hero / waitlist / launch page in the style of mojo.trade, an 'engraved atlas', 'botanical plate', 'celestial chart', 'letterpress dark editorial' aesthetic",en:"Use when the user asks to design a landing / hero / waitlist / launch page in the style of mojo.trade"},
+  before:{zh:"默认产出是圆角卡片 + 渐变 + ease-out 动效——一眼「AI 做的」，放在交易/金融产品上尤其违和",en:"The default output: rounded cards, gradients, ease-out — instant \"AI-made\" look, worst on trading/fintech"},
+  after:{zh:"四条蓝图 + 完整 replica：hero 被双细线框成「图版 I」，标题带标志性斜体关键词，微标签全大写等宽——launch 页从第一屏就脱离模板感",en:"Four blueprints + a full replica: hero framed as Plate I with a double hairline, signature italic keywords, mono micro-labels — off-template from the first screen"}},
+ {n:"02",tab:{zh:"喜欢印刷品质感：暗纸、图鉴、星图、活版印刷",en:"You want print-shop feel: dark paper, plates, celestial charts, letterpress"},
+  trig:{zh:"...an 'engraved atlas', 'botanical plate', 'celestial chart', 'letterpress dark editorial' aesthetic",en:"...an 'engraved atlas', 'botanical plate', 'letterpress dark editorial' aesthetic"},
+  before:{zh:"手工拼这种感觉要反复试：纸色、墨色、强调色、字体三角、颗粒、滤镜——每个都是独立决策",en:"Hand-assembling means trial and error: paper, ink, accent, type trio, grain, filters — each a separate decision"},
+  after:{zh:"一套 tokens.css 定死纸墨与唯一强调色，四条蓝图定死结构，replica 给出成品参照——质感是配置出来的，不是碰出来的",en:"tokens.css locks paper/ink/accent, four blueprints lock structure, the replica shows the target — feel by configuration, not luck"}},
+ {n:"04",tab:{zh:"想让 Agent 稳定复现这套审美，而不是每次重新描述",en:"You want your agent to reproduce this taste reliably"},
+  trig:{zh:"...or asks to reuse this design system, its tokens, motifs, or copy voice",en:"...or asks to reuse this design system, its tokens, motifs, or copy voice"},
+  before:{zh:"每次 prompt 里贴截图、写长描述，结果仍然漂移；团队里每个人做出来一个样",en:"Pasting screenshots and long prompts every time; output still drifts; everyone builds a different page"},
+  after:{zh:"装进 skills 目录，一句「用 Mojo Plate 做」触发同一套规则——非协商 8 条写死，产出稳定可预期",en:"Install into skills; one line triggers the same rules — eight non-negotiables baked in, output stable"}}
+];
+const RULES=[
+ {b:"PALETTE",zh:"近黑暖纸 #0b0b09 + 骨白墨 #e9e5d4 + 唯一酸绿 #cdf546——绝不加第二种强调色",en:"Near-black warm paper, bone ink, ONE acid accent — never a second"},
+ {b:"TYPE TRIO",zh:"Instrument Serif 展示（斜体强调词）/ Inter 300 正文 / JetBrains Mono 全大写微标签 .22–.42em",en:"Serif display italics, Inter 300 body, mono ALL-CAPS micro-labels"},
+ {b:"PRINT FRAMING",zh:"章节即「图版」：❦ PLATE N ❦ 花饰标题；hero 双细线框；一切靠 1–1.5px 发丝线而非圆角卡片",en:"Sections are Plates with fleurons; double-rule hero frame; hairlines over cards"},
+ {b:"NO RADIUS",zh:"全局零圆角；阴影是硬偏移（4px 4px / 6px 7px），永不模糊",en:"Zero border-radius; hard offset shadows, never blurred"},
+ {b:"STEPS() MOTION",zh:"入场与 hover 用 steps(2–4, end)——印刷翻页感，拒绝平滑 ease-out",en:"steps(2–4,end) everywhere — flip-book motion, no smooth easing"},
+ {b:"FILM GRAIN",zh:"固定 SVG 湍流颗粒层：opacity .22 + mix-blend-mode screen",en:"Fixed SVG turbulence grain, opacity .22, screen blend"},
+ {b:"BOIL FILTER",zh:"feTurbulence + feDisplacementMap(scale 3.2) 让字标与蚀刻线条「手绘颤动」",en:"Turbulence displacement makes etchings wobble like hand-drawn"},
+ {b:"COPY VOICE",zh:"短句、第二人称、现在时；每标题一个斜体衬线词（Invest with taste mode.）；时间戳代替营销话术",en:"Terse, second-person, present tense; one italic keyword per headline; timestamps over marketing"}
+];
+const TOK=[
+ {n:"Paper · <span class='zh'>近黑暖纸</span><span class='en'>warm paper</span>",h:"#0b0b09",c:"#0b0b09",dark:true},
+ {n:"Ink · <span class='zh'>骨白墨</span><span class='en'>bone ink</span>",h:"#e9e5d4",c:"#e9e5d4",dark:false},
+ {n:"Acid Lime · <span class='zh'>唯一强调</span><span class='en'>the ONE accent</span>",h:"#cdf546",c:"#cdf546",dark:true},
+ {n:"Terra Deep · <span class='zh'>斜体强调专用</span><span class='en'>italic emphasis only</span>",h:"#b8e032",c:"#b8e032",dark:true}
+];
+const lang=()=>document.documentElement.dataset.lang;
+const L=o=>o[lang()];
+function setLang(l){document.documentElement.dataset.lang=l;localStorage.setItem("mj-lang",l);
+ document.getElementById("lang-zh").classList.toggle("on",l==="zh");
+ document.getElementById("lang-en").classList.toggle("on",l==="en");renderScen();renderRules();renderTok();}
+function setTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem("mj-theme",t);
+ document.getElementById("th-light").classList.toggle("on",t==="light");
+ document.getElementById("th-dark").classList.toggle("on",t==="dark");}
+let curScen=0;
+function renderScen(){
+ document.getElementById("sc-tabs").innerHTML=SCEN.map((s,i)=>`
+  <button class="sc-tab${i===curScen?" on":""}" onclick="pickScen(${i})"><i>PLATE ${s.n}</i><span>${L(s.tab)}</span></button>`).join("");
+ const s=SCEN[curScen];
+ document.getElementById("sc-panel").innerHTML=`<div class="sc-flex">
+  <div><div style="font-size:14.5px;color:var(--ink2);line-height:1.8">${L(s.after)}</div>
+   <div class="sc-quote"><b><span class="zh">触发判定 · SKILL.md 原文</span><span class="en">Trigger · verbatim</span></b>${L(s.trig)}</div></div>
+  <div class="vs">
+   <div class="vs-card vs-no"><b><span class="zh">没有它</span><span class="en">Without it</span></b>${L(s.before)}</div>
+   <div class="vs-card vs-yes"><b><span class="zh">有了之后</span><span class="en">With it</span></b>${L(s.after)}</div>
+  </div></div>`;
+}
+function pickScen(i){curScen=i;renderScen();}
+function renderRules(){
+ document.getElementById("rule-grid").innerHTML=RULES.map(r=>`
+  <div class="rule"><b>${r.b}</b><span><span class="zh">${r.zh}</span><span class="en">${r.en}</span></span></div>`).join("");
+}
+function renderTok(){
+ document.getElementById("tok-grid").innerHTML=TOK.map(t=>`
+  <div class="tk"><div class="tk-sw" style="background:${t.c};${t.dark?"":"border-bottom:1px solid var(--hairline)"}"></div>
+  <div class="tk-b"><div class="tk-n">${t.n}</div><div class="tk-h">${t.h}</div></div></div>`).join("");
+}
+(function boot(){
+ const q=new URLSearchParams(location.search);
+ setTheme(q.get("theme")||localStorage.getItem("mj-theme")||"light");
+ setLang(q.get("lang")||localStorage.getItem("mj-lang")||(navigator.language.startsWith("zh")?"zh":"en"));
+ document.getElementById("rep-iframe").src="replica/index.html";
+})();
+</script>
+</body>
+</html>
